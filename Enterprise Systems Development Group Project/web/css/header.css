@@ -1,0 +1,31 @@
+/*Header image and title, Created on : 27-Nov-2017, 13:16:36    Author: Muneeb, Sasha*/
+
+.header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 500px;
+    height: 100px;
+    background: #333333;
+}
+
+.header-logo {
+    width: 400px;
+    height: 100px;
+    position:fixed;
+    alignment-adjust: middle;
+    overflow: hidden;
+}
+#header-img {
+    width: 100px;
+    height: 100px;
+    float: right;
+}
+
+#header-txt {
+    font-size: 40px;
+    float: right;
+    color: #ffffff;
+}
+
+

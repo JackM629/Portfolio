@@ -1,0 +1,46 @@
+ITEM
+====================================
+- ItemID : Integer
+- Title : String
+- NumberAvailable : Integer
+====================================
++ Item(ItemID : Integer, Title : String, NumberAvailable : Integer)
++ getItemID()
++ getTitle()
++ getNumberAvailable()
++ setNumberAvailable()
++ checkItemAvailability()
+
+
+
+MEMBER
+====================================
+- MemberID : Integer
+- MemberName : String
+====================================
++ Member(MemberID : Integer, MemberName : String)
++ getMemberID()
++ getMemberName()
++ requestTransaction()
++ addNewMemberManualInput()
++ addNewMemberTextFile()
++ searchItem()
++ cancelBooking()
+
+
+
+TRANSACTION
+====================================
+- TransactionID : String
+- ItemID : Integer
+- MemberID : Integer
+- Date : String
+====================================
++ Transaction(TransactionID : String, ItemID : Integer, MemberID : Integer, Date : String)
++ getTransactionID()
++ getItemID()
++ getMemberID()
++ getDate()
++ AssignItemToUser()
++ QueueBookingRequest()
++ RejectBookingRequest()

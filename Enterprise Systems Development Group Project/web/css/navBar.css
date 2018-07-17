@@ -1,0 +1,32 @@
+/*Navigation Bar, Created on : 27-Nov-2017, 13:16:36   Author: Muneeb, Frazer, Sasha*/
+.navBar {
+    height: 100%;
+    width: 160px;
+    position: fixed; 
+    top: 100px;
+    left:0;
+    overflow: hidden;   
+    
+}
+
+ul.menu  {
+    padding: 10px;
+    
+}
+
+ul.menu  li {
+    
+    margin-bottom: 20px;
+}
+
+ul.menu  li  a{
+    background-color: #ffffff;
+    color: #1f191a;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 4px 4px 0 0;
+}
+
+ul.menu li a:hover {
+    background-color: #FD8F8F;
+}

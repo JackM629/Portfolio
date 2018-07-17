@@ -1,0 +1,366 @@
+GLOBAL VARIABLES
+====================================
+ArrayList Member members
+ArrayList Item items
+ArrayList Transaction transactions
+int itemToBeBooked
+int memberToBeBooked
+
+ADD NEW MEMBER MANUAL INPUT
+====================================
+String workingMemberID
+String newMemberID
+String newMemberName
+Member workingMember
+boolean memberIDAvailable
+====================================
+SET newMemberID = INPUT memberID
+SET newMemberName = INPUT memberName
+SET boolean memberIDAvailable = true
+IF newMemberID.length != 5
+    DISPLAY Error Message: Member ID needs to be 5 characters long
+ELSE IF newMemberID.isNaN
+    DISPLAY Error Message: Member ID may only consist of integers
+ELSE IF newMemberName.length > 30 OR newMemberName.length < 2
+    DISPLAY Error Message: Member Name must be between 2 and 30 characters long
+ELSE
+    FOR i = 0 to members size
+        SET workingMember = members(i)
+        SET workingMemberID = workingMember.getID
+        IF workingMemberID = newMemberID
+            SET memberIDAvailable = false
+        ENDIF
+    ENDFOR
+    IF memberIDAvailable = true
+        ADD new Member to members (values: newMemberID, newMemberName, 0)
+    ELSE
+        DISPLAY Error Message: That Member ID Number is already taken
+    ENDIF
+ENDIF
+    
+
+ADD NEW ITEM MANUAL INPUT
+====================================
+String newItemID
+String newItemName
+String newItemInitialNumberAvailable
+boolean itemIDAvailable
+Item workingItem
+int workingItemID
+boolean itemIDAvailable
+====================================
+SET newItemID = INPUT itemID
+SET newItemName = INPUT itemName
+SET newItemInitialNumberAvailable = INPUT itemInitialNumberAvailable
+SET itemIDAvailable = true
+IF newItemID != 4
+    DISPLAY Error Message: Item ID needs to be 4 characters long
+ELSE IF newItemID.isNaN
+    DISPLAY Error Message: Item ID may only consist of integers
+ELSE IF newItemName.length > 30 OR newItemName.length < 2
+    DISPLAY Error Message: Item name must be between 2 and 30 characters long
+ELSE IF newItemInitialNumberAvailabe.isNaN
+    DISPLAY Error Message: Number Available must be an integer
+ELSE 
+    FOR i = 0 to items size
+        SET workingItem = items(i)
+        SET workingItemID = workingItem.getID
+        IF workingItemID = newItemID
+            SET itemIDAvailable = false
+        ENDIF
+        IF itemIDAvailable = true
+            ADD new Item to items (values newItemID, newItemName, newItemInitialNumberAvailable, 10, 0)
+        ELSE
+            DISPLAY Error Message: That Item ID Number is already taken
+        ENDIF
+    ENDFOR
+ENDIF
+
+SEARCH ITEMS
+====================================
+String searchTerm
+String results
+Item workingItem
+int workingItemIDNumber
+String workingItemName
+int workingItemNumberAvailable
+====================================
+SET searchTerm = INPUT search term
+SET results = null;
+FOR i = 0 to items size
+    SET workingItem = items(i)
+    SET workingItemID = workingItem.getID
+    SET workingItemName = workingItem.getName
+    SET workingItemCurrentNumberAvailable = workingItem.getNumberAvailable
+    IF workingItemName contains searchTerm
+        SET results = results + workingItem(String)
+    ENDIF
+ENDFOR
+DISPLAY results
+IF results = null
+    DISPLAY Information Message: No results found
+ENDIF
+
+FIND ITEM
+====================================
+String searchTerm
+Item workingItem
+int workingItemID
+String workingItemName
+int workingItemCurrentNumberAvaiable
+String itemPreview
+Item itemToBeBooked
+====================================
+searchTerm = INPUT search term
+IF searchTerm.length != 4
+    DISPLAY Error Message: Item ID needs to be 4 characters long
+ELSE IF searchTerm.isNaN
+    DISPLAY Error Message: Item ID may only consist of integers
+ELSE IF items size = 0
+    DISPLAY Error Message: Items need to be added first
+ELSE
+    FOR i = 0 to items size
+        SET workingItem = items(i)
+        SET workingItemID = workingItem.getID
+        SET workingItemName = workingItem.getName
+        SET workingItemCurrentNumberAvailable = workingItem.getCurrentNumberAvailable
+        IF searchTerm = workingItemID
+            SET itemPreview = workingItem(String)
+            SET itemToBeBooked = workingItem
+        ENDIF
+    ENDFOR
+    IF itemToBeBooked = null
+        DISPLAY Information Message: No items found
+    ELSE
+        DISPLAY itemToBeBooked
+    ENDIF
+ENDIF
+
+ADD NEW MEMBER TEXT FILE INPUT
+====================================
+Scanner readMember (reads NewMemberInfo text file)
+String workingLine
+String newMemberID
+String newMemberName
+int workingField
+char workingChar
+====================================
+WHILE readMember has next line
+    SET newMemberID = null
+    SET newMemberName = null
+    SET workingLine = readMember next line
+    SET workingField = 0
+    WHILE workingField < 2
+        FOR i = 0 to workingLine.length
+            SET workingChar = workingLine.charAt(i)
+            IF workingChar = ","
+                INC workingField
+            ELSE IF workingField = 0
+                SET newMemberID = newMemberID + workingChar
+            ELSE
+                SET newMemberName = newMemberName + workingChar
+            ENDIF
+        ENDFOR
+        IF newMemberID.length != 5
+            DISPLAY Error Message: The member ID on line (i) is not 5 characters long
+        ELSE IF newMemberID.isNaN
+            DISPLAY Error Message: The member ID on line (i) is not numerical
+        ELSE IF newMemberName.length > 30 OR newMemberName.length < 2
+            DISPLAY Error Message: The member name on line (i) is not between 2 and 30 characters long
+        ELSE
+            ADD new Member to members (values newMemberID, newMemberName, 0)
+        ENDIF
+    ENDWHILE
+ENDWHILE
+
+ADD NEW ITEM TEXT FILE INPUT
+====================================
+Scanner readItem (reads NewItemInfo text file)
+String workingLine
+String newItemID
+String newItemName
+String newItemInitialNumberAvailable
+int workingField
+char workingChar
+====================================
+WHILE readItem has next line
+    SET newItemID = null
+    SET newItemName = null
+    SET newItemInitialNumberAvailable = null
+    SET workingLine = readItem next line
+    SET workingField = 0
+    WHILE workingField < 2
+        FOR i = 0 to workingLine.length
+            SET workingChar = workingLine.charAt(i)
+            IF workingChar = ","
+                INC workingField
+            ELSE IF workingField = 0
+                SET newItemID = newItemID + workingChar
+            ELSE IF workingField = 1
+                SET newItemName = newItemName + workingChar
+            ELSE
+                SET newItemInitialNumberAvailable = newItemInitialNumberAvailable + workingChar
+            ENDIF
+        ENDFOR
+        IF newItemID.length != 4
+            DISPLAY Error Message: The item ID on line (i) is not 5 characters long
+        ELSE IF newItemID.isNaN
+            DISPLAY Error Message: The item ID on line (i) is not numerical
+        ELSE IF newItemName.length > 30 OR newItemName.length < 2
+            DISPLAY Error Message: The item name on line (i) is not between 2 and 30 characters long
+        ELSE IF newItemInitialNumberAvailable 
+            DISPLAY Error Message: The item number available on line (i) is not numerical
+        ELSE
+            ADD new Item to items (newItemID, newItemName, newItemInitialNumberAvailable, 10, 0)
+        ENDIF
+    ENDWHILE
+ENDWHILE
+
+REQUEST BOOKING
+====================================
+Item itemToBeBooked
+int memberID
+int itemID
+Member memberToBeBooked
+int transactionID
+int transactionTime
+int itemNumberRemaining
+int itemRequestsRemaining
+int memberItemsBooked
+int memberItemsRequested
+int memberOffset
+int itemOffset
+Member workingMember
+int workingMemberID
+Item workingItem
+int workingItemID
+====================================
+SET itemToBeBooked = INPUT item to be booked
+SET itemID = itemToBeBooked.getID
+SET memberID = INPUT member ID
+SET transactionID = INPUT transaction ID
+SET transactionDate = INPUT transaction Date
+IF itemID = null
+    DISPLAY Error Message: Please search for an item first
+ELSE IF validateTransactionIDFormat returns false
+    DISPLAY Error Message: Your transaction ID must be in the format LLNNNN where each L is a letter and each N is a number
+ELSE IF validateTransactionDateFormat returns false
+    DISPLAY Error Message: Your transaction date must be in the format NN/NN/NN where each N is a number
+ELSE
+    FOR i = 0 to members size
+        SET workingMember = members(i)
+        SET workingMemberID = workingMember.getID
+        IF memberID = workingMemberID
+            SET memberToBeBooked = workingMember
+            SET memberOffset = i
+        ENDIF
+    ENDFOR
+    IF memberOffset = null
+        DISPLAY Error Message: Please enter a valid member ID 
+    FOR i = 0 to items size
+        SET workingItem = items(i)
+        SET workingItemID = workingItem.getID
+        IF itemID = workingItemID
+            SET itemOffset = i
+        ENDIF
+    ENDFOR
+    SET itemNumberRemaining = itemToBeBooked.getNumberRemaining
+    SET itemRequestsRemaining = itemToBeBooked.getRequestsRemaining
+    SET memberItemsBooked = memberToBeBooked.getItemsBooked
+    SET memberItemsRequested = memberToBeBooked.getItemsRequested
+    IF itemNumberRemaining > 0
+        IF memberItemsBooked < 5
+            ADD new Transaction to transactions (transactionID, itemID, memberID, transactionDate, true)
+            SET memberItemsBooked = memberItemsBooked + 1
+            SET members(i).itemsBooked = memberItemsBooked
+            SET itemNumberRemaining = itemNumberRemaining - 1 
+            SET items(i).numberRemaining = itemNumberRemaining
+            DISPLAY Information Message: Transaction successful, item booked
+            CALL maintainTransaction
+        ELSE IF memberItemsRequested < 5
+            ADD new Transaction to transactions (transactionID, itemID, memberID, transactionDate, false)
+            SET memberItemsRequested = memberItemsRequested + 1
+            SET members(i).itemsRequested = memberItemsRequested
+            SET itemRequestsRemaining = itemRequestsRemaining - 1
+            SET items(i).requestsRemaining = itemRequestsRemaining
+            DISPLAY Information Message: Transaction successful, item requested
+            CALL maintainTransaction
+        ELSE
+            DISPLAY Information Message: Transaction unsuccessful, member cannot carry out any more transactions at this moment in time
+        ENDIF
+    ELSE IF itemRequestsRemaining > 0
+        IF memberItemsRequested < 5
+            ADD new Transaction to transactions (transactionID, itemID, memberID, transactionDate, false)
+            SET memberItemsRequested = memberItemsRequested + 1
+            SET members(i).itemsRequested = memberItemsRequested
+            SET itemRequestsRemaining = itemRequestsRemaining - 1
+            SET items(i).requestsRemaining = itemRequestsRemaining
+            DISPLAY Information Message: Item Requested
+            CALL maintainTransaction
+        ELSE
+            DISPLAY Information Message: Transaction unsuccessful, item is not currently available for booking and member cannot carry out any more requests
+        ENDIF
+    ELSE
+        DISPLAY Information Message: Transaction unsuccessful, item is currently fully booked
+    ENDIF
+ENDIF
+    
+VALIDATE TRANSACTION ID
+====================================
+String transactionID
+====================================
+SET transactionID = INPUT transaction ID
+IF transactionID.length != 6
+    DISPLAY Error Message: Your transaction ID must be 6 characters long
+ELSE IF transactionID.charAt(0).isNotString || transactionID.charAt(1).isNotString || transactionID.charAt(2).isNaN || transactionID.charAt(3).isNaN || transactionID.charAt(4).isNaN || transactionID.charAt(5).isNaN
+    DISPLAY Error Message: Your transaction ID must be in the format LLDDDD where each L is a letter and each D is a digit
+ELSE
+    RETURN null
+ENDIF
+
+VALIDATE TRANSACTION DATE
+====================================
+String transactionDate
+====================================
+SET transactionDate = INPUT transaction date
+IF transactionDate.length != 8
+    DISPLAY Error Message: Your transaction date must be in the format DD/DD/DD where each D is a digit
+ELSE IF transactionDate.charAt(0).isNaN || transactionDate.charAt(1).isNaN || transactionDate.charAt(2) != '/' || transactionDate.charAt(3).isNaN || transactionDate.charAt(4).isNaN || transactionDate.charAt(5) != '/' || transactionDate.charAt(6).isNaN || transactionID,charAt(7).isNaN
+    DISPLAY Error Message: Your transaction date must be in the format DD/DD/DD where each D is a digit
+ELSE
+    RETURN null
+ENDIF
+
+VIEW CURRENT BOOKINGS
+====================================
+int memberID
+Transaction workingTransaction
+int workingTransactionIDNumber
+int workingTransactionMemberIDNumber
+int workingTransactionItemIDNumber
+boolean workingTransactionItemInStock
+String results
+====================================
+SET memberID = INPUT member ID
+IF memberID.length != 5
+    DISPLAY Error Message: Your user ID number must be 5 characters long
+ELSE IF memberID.isNaN
+    DISPLAY Error Message: Your user ID number may only consist of integers
+ELSE
+    FOR i = 0 to transactions size
+        SET workingTransaction = transactions(i)
+        SET workingTransactionMemberID = workingTransaction.getMemberID
+        IF memberID = workingTransactionMemberID
+            SET workingTransactionID = workingTransaction.getTransactionID
+            SET workingTransactionItemID = workingTransaction.getItemID
+            SET workingTransactionDate = workingTransaction.getDate
+            SET workingTransactionItemInStock = workingTransaction.getItemInStock
+            IF workingTransactionItemInStock = true
+                SET results = results + workingTransaction(String with return date)
+            ELSE
+                SET results = results + workingTransaction(String with 'item requested')
+            ENDIF
+        ENDIF
+    ENDFOR
+    DISPLAY results
+ENDIF
